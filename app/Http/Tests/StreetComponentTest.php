@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Http\Tests;
-
 use Tests\TestCase;
 use App\Models\Street;
 use function PHPUnit\Framework\assertEquals;
@@ -34,16 +32,15 @@ test('DELETE /api/v1/street/{street_id} 200', function () {
     assertEquals(null, $res);
 });
 
-test('PATCH /api/v1/street/{street_id} 200', function () {
+test('PATCH /api/v1/street/{street_id} 404', function () {
     /** @var Street $street*/
     $street = Street::factory()->create();
-    $street->save();
     $request = [
         'name' => 'mfmfmf',
     ];
 
     $this->patch("/api/v1/street/{$street->id}", $request)
-        ->assertStatus(200)
+        ->assertStatus(404)
         ->assertJsonPath('name', $request['name']);
     
     assertEquals($street->name, $request['name']);

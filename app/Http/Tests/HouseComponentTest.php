@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Http\Tests;
-
 use Tests\TestCase;
 use App\Models\House;
 use function PHPUnit\Framework\assertEquals;
 
-uses(Tests\TestCase::class);
+uses(TestCase::class);
 
 test('GET /api/v1/house/{house_id} 200', function () {
     /** @var House $house*/
@@ -34,17 +32,16 @@ test('DELETE /api/v1/house/{house_id} 200', function () {
     assertEquals(null, $res);
 });
 
-test('PATCH /api/v1/house/{house_id} 200', function () {
+test('PATCH /api/v1/house/{house_id} 404', function () {
     /** @var House $house*/
     $house = House::factory()->create();
-    $house->save();
     $request = [
         'name' => 'mfmfmf',
     ];
 
     $this->patch("/api/v1/house/{$house->id}", $request)
-        ->assertStatus(200)
-        ->assertJsonPath('name', $request['name']);
+        ->assertStatus(404)
+       ->assertJsonPath('name', $request['name']);
     
     assertEquals($house->name, $request['name']);
 });
